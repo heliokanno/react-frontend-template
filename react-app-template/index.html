@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>React Frontend Template</title>
+    <script>
+      // Anti-FOUC: aplica o tema antes da renderização, evitando flash.
+      // Espelha a lógica do ThemeProvider (preferência salva ou preferência do SO).
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme-preference');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark =
+            stored === 'dark' || ((stored === null || stored === 'system') && prefersDark);
+          document.documentElement.classList.toggle('dark', isDark);
+        } catch (e) {
+          /* ambiente sem storage: mantém o tema claro padrão */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

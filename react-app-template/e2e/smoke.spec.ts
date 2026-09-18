@@ -1,8 +1,18 @@
 import { expect, test } from '@playwright/test';
 
-// Fluxo de fumaça: garante que a aplicação sobe e renderiza o conteúdo base.
-test('a aplicação carrega e exibe o título', async ({ page }) => {
+// Fluxo de fumaça: garante que a aplicação sobe e renderiza a página de referência.
+test('a aplicação carrega e exibe a referência de tokens', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByRole('heading', { name: /react frontend template/i })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 1, name: /design system — tokens/i }),
+  ).toBeVisible();
+});
+
+test('permite alternar para o tema escuro', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByRole('button', { name: 'Tema escuro' }).click();
+
+  await expect(page.locator('html')).toHaveClass(/dark/);
 });

@@ -62,6 +62,32 @@ Copie `.env.example` para `.env.local` e ajuste os valores. Variáveis do fronte
 prefixo `VITE_` e são acessadas de forma tipada em `src/shared/config/env.ts`
 (nunca via `import.meta.env` espalhado pelo código). Arquivos `.env` reais não são versionados.
 
+## Design System
+
+A linguagem visual é dirigida por **design tokens** (fonte única de verdade), com
+**Tailwind CSS v4** consumindo esses tokens. Ver `.kiro/steering/design-system.md`.
+
+```text
+src/shared/design-system/
+├── tokens/       # primitive → semantic (CSS variables)
+├── theme/        # ThemeProvider, useTheme, ThemeToggle
+└── reference/    # TokensReferencePage (documentação viva)
+```
+
+- **Tokens**: primitivos (valores brutos) em `tokens/primitives.css`; semânticos (por
+  intenção de uso) em `tokens/semantic.css`. Componentes consomem apenas os semânticos.
+- **Tema light/dark**: o `ThemeProvider` aplica a classe `.dark` no elemento raiz; os
+  tokens semânticos mudam de valor por tema. Componentes **não** conhecem o tema — usam
+  tokens. A preferência é persistida em `localStorage` e um script anti-FOUC no
+  `index.html` aplica o tema antes da renderização.
+- **Tailwind v4**: configurado via `@theme` em `src/index.css`, mapeando os utilitários
+  para os tokens (ex.: `bg-surface-default`, `text-text-primary`). Breakpoints são valores
+  literais (media queries não aceitam `var()`).
+- **Ícones**: `lucide-react`. Ícones decorativos usam `aria-hidden`; ícones de ação têm
+  nome acessível.
+- **Página de referência**: a `TokensReferencePage` exibe cores, tipografia, espaçamento,
+  radius e sombras, com toggle de tema — útil para validar a linguagem visual.
+
 ## Qualidade
 
 - O `pre-commit` (Husky + lint-staged) roda ESLint e Prettier apenas nos arquivos em stage.

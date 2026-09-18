@@ -1,0 +1,37 @@
+/**
+ * Tokens semânticos de tipografia — hierarquia de texto.
+ *
+ * Mapeiam a escala tipográfica primitiva para papéis de uso (page title,
+ * section title, body, etc.), evitando tamanhos arbitrários por componente.
+ * Ver `.kiro/steering/design-system.md` → Typography.
+ */
+
+:root {
+  --text-page-title-size: var(--font-size-3xl);
+  --text-page-title-weight: var(--font-weight-bold);
+  --text-page-title-line-height: var(--line-height-tight);
+
+  --text-section-title-size: var(--font-size-xl);
+  --text-section-title-weight: var(--font-weight-semibold);
+  --text-section-title-line-height: var(--line-height-tight);
+
+  --text-subtitle-size: var(--font-size-lg);
+  --text-subtitle-weight: var(--font-weight-medium);
+  --text-subtitle-line-height: var(--line-height-normal);
+
+  --text-body-size: var(--font-size-base);
+  --text-body-weight: var(--font-weight-normal);
+  --text-body-line-height: var(--line-height-normal);
+
+  --text-body-small-size: var(--font-size-sm);
+  --text-body-small-weight: var(--font-weight-normal);
+  --text-body-small-line-height: var(--line-height-normal);
+
+  --text-caption-size: var(--font-size-xs);
+  --text-caption-weight: var(--font-weight-normal);
+  --text-caption-line-height: var(--line-height-normal);
+
+  --text-label-size: var(--font-size-sm);
+  --text-label-weight: var(--font-weight-medium);
+  --text-label-line-height: var(--line-height-normal);
+}

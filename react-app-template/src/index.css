@@ -1,0 +1,77 @@
+/**
+ * CSS global da aplicação.
+ *
+ * Ordem: tokens do Design System → Tailwind → mapeamento @theme.
+ * Os utilitários do Tailwind passam a refletir os tokens semânticos, evitando
+ * valores arbitrários (ver `.kiro/steering/design-system.md`).
+ */
+
+@import './shared/design-system/tokens/index.css';
+@import 'tailwindcss';
+
+/* O tema escuro é ativado pela classe `.dark` no elemento raiz (ThemeProvider),
+   não por media query — assim a escolha do usuário sobrepõe a preferência do SO. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Mapeia os tokens do Design System para as escalas utilitárias do Tailwind v4.
+   Ex.: `bg-surface-default`, `text-text-primary`, `rounded-md`, `shadow-md`. */
+@theme inline {
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-on-accent: var(--color-text-on-accent);
+  --color-text-inverse: var(--color-text-inverse);
+
+  --color-surface-default: var(--color-surface-default);
+  --color-surface-subtle: var(--color-surface-subtle);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-surface-inverse: var(--color-surface-inverse);
+
+  --color-border-default: var(--color-border-default);
+  --color-border-strong: var(--color-border-strong);
+
+  --color-action-primary: var(--color-action-primary);
+  --color-action-primary-hover: var(--color-action-primary-hover);
+  --color-action-primary-active: var(--color-action-primary-active);
+
+  --color-feedback-success: var(--color-feedback-success);
+  --color-feedback-success-surface: var(--color-feedback-success-surface);
+  --color-feedback-warning: var(--color-feedback-warning);
+  --color-feedback-warning-surface: var(--color-feedback-warning-surface);
+  --color-feedback-error: var(--color-feedback-error);
+  --color-feedback-error-surface: var(--color-feedback-error-surface);
+  --color-feedback-info: var(--color-feedback-info);
+  --color-feedback-info-surface: var(--color-feedback-info-surface);
+
+  --color-focus-ring: var(--color-focus-ring);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* Breakpoints devem ser valores literais: media queries não aceitam var().
+   Mantidos alinhados aos primitivos --breakpoint-* (referência em primitives.css). */
+@theme {
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface-default);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
+}
