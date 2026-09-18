@@ -1,0 +1,35 @@
+# Dependências
+node_modules
+
+# Build
+dist
+dist-ssr
+
+# Ambiente (nunca versionar secrets)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Cache e cobertura
+coverage
+.vite
+*.local
+*.tsbuildinfo
+
+# Testes / Playwright
+/playwright-report
+/playwright/.cache
+/test-results
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
