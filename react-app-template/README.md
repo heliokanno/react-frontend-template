@@ -110,6 +110,29 @@ src/shared/ui/
 - **Providers**: `TooltipProvider` e `ToastProvider` são montados em `main.tsx`; use
   `useToast()` para disparar toasts.
 
+## Camada de dados (HTTP e erros)
+
+A comunicação com a API é centralizada; a UI nunca fala HTTP direto — consome casos de uso
+que usam portas, implementadas por adapters na infraestrutura (ver
+`.kiro/steering/hexagonal-architecture.md`).
+
+```text
+src/infrastructure/
+├── http/     # HttpClient (interface), FetchHttpClient, httpConfig, exemplo de ports/adapter
+├── errors/   # ProblemDetail (RFC 7807), AppError, toAppError, errorMessages
+└── query/    # QueryClient (TanStack Query) e helpers de query keys
+src/shared/async/  # AsyncState + toAsyncState (idle/loading/empty/success/error)
+```
+
+- **HttpClient**: `FetchHttpClient` sobre `fetch`, com base URL (`/api/v1`), timeout via
+  `AbortController`, parsing JSON e interceptors (prontos para token/refresh na spec 008).
+- **Erros**: respostas de erro seguem `ProblemDetail`; `toAppError` traduz para `AppError`
+  (discriminated union por categoria) na borda; `getErrorMessage` converte em mensagem de
+  usuário, sem vazar detalhes técnicos.
+- **Server state**: `@tanstack/react-query` v5 com defaults consistentes (staleTime, retry
+  seletivo por tipo de erro). Query keys padronizadas por feature via `createQueryKeys`.
+- **Estados**: `toAsyncState` deriva os estados que a UI trata a partir de um `useQuery`.
+
 ## Qualidade
 
 - O `pre-commit` (Husky + lint-staged) roda ESLint e Prettier apenas nos arquivos em stage.
