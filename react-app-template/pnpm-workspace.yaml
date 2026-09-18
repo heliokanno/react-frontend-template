@@ -1,0 +1,6 @@
+# Configuração do pnpm (v11+ lê as settings daqui, não mais de package.json#pnpm).
+# allowBuilds libera explicitamente os pacotes autorizados a rodar build scripts
+# na instalação, de forma determinística e versionada.
+allowBuilds:
+  esbuild: true
+  msw: true
