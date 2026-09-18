@@ -5,7 +5,7 @@ import { toAppError } from '@/infrastructure/errors/toAppError';
 
 /** Não repetir requisições para erros que não se resolvem com retry. */
 function shouldRetry(failureCount: number, error: unknown): boolean {
-  const appError = error as AppError;
+  const appError = toAppError(error);
   const nonRetryable: ReadonlyArray<AppError['kind']> = [
     'unauthorized',
     'forbidden',
@@ -13,7 +13,7 @@ function shouldRetry(failureCount: number, error: unknown): boolean {
     'validation',
     'conflict',
   ];
-  if (appError && nonRetryable.includes(appError.kind)) {
+  if (nonRetryable.includes(appError.kind)) {
     return false;
   }
   return failureCount < 2;

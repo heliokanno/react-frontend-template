@@ -1,12 +1,19 @@
-import { TokensReferencePage } from '@/shared/design-system/reference/TokensReferencePage';
+import { RouterProvider } from 'react-router';
+
+import { AppErrorBoundary } from '@/app/error/AppErrorBoundary';
+import { AppProviders } from '@/app/providers/AppProviders';
+import { router } from '@/app/router/router';
 
 /**
- * Componente raiz da aplicação.
- *
- * Nesta fase (spec 002) exibe a página de referência dos tokens do Design
- * System, que valida a linguagem visual e o tema. Roteamento e shell entram
- * nas specs 005+.
+ * Componente raiz: envolve a aplicação no boundary de erro e nos providers
+ * globais, e monta o roteamento central.
  */
 export function App() {
-  return <TokensReferencePage />;
+  return (
+    <AppErrorBoundary>
+      <AppProviders>
+        <RouterProvider router={router} />
+      </AppProviders>
+    </AppErrorBoundary>
+  );
 }

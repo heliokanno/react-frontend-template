@@ -53,11 +53,21 @@ function fromHttpError(error: HttpError): AppError {
   });
 }
 
+function isAppError(value: unknown): value is AppError {
+  return (
+    typeof value === 'object' && value !== null && 'kind' in value && typeof value.kind === 'string'
+  );
+}
+
 /**
  * Traduz qualquer erro capturado na borda de infraestrutura em um `AppError`.
  * Deve ser usado pelos adapters; o domínio nunca lida com detalhes técnicos.
+ * Se o valor já for um `AppError`, é retornado como está (idempotente).
  */
 export function toAppError(error: unknown): AppError {
+  if (isAppError(error)) {
+    return error;
+  }
   if (error instanceof HttpError) {
     return fromHttpError(error);
   }

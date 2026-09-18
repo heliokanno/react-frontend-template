@@ -133,6 +133,31 @@ src/shared/async/  # AsyncState + toAsyncState (idle/loading/empty/success/error
   seletivo por tipo de erro). Query keys padronizadas por feature via `createQueryKeys`.
 - **Estados**: `toAsyncState` deriva os estados que a UI trata a partir de um `useQuery`.
 
+## Roteamento e camada `app`
+
+O roteamento é centralizado na camada `app`, com `react-router`. A UI é montada sobre
+providers globais compostos e um composition root de injeção de dependências.
+
+```text
+src/app/
+├── App.tsx              # boundary raiz + providers + RouterProvider
+├── providers/           # AppProviders (Container→Query→Theme→Tooltip→Toast), QueryProvider
+├── router/              # router.tsx, routes.ts (constantes tipadas), Protected/PublicRoute, session (stub)
+├── layouts/             # RootLayout (área autenticada), AuthLayout (público)
+├── error/               # AppErrorBoundary, RouteErrorBoundary, NotFoundPage
+├── di/                  # container (composition root), ContainerProvider, useContainer
+└── pages/               # páginas de exemplo (login placeholder, dashboard)
+```
+
+- **Rotas tipadas**: usar as constantes de `ROUTES` (evita strings mágicas).
+- **Guards**: rotas protegidas passam por `ProtectedRoute`, que consome `useSession` (stub
+  até a spec 008 — que injeta a autenticação real sem reescrever o roteamento).
+- **Lazy loading**: páginas carregadas com `lazy` + `Suspense` (code splitting no build).
+- **Error boundaries**: falhas de rota são contidas por `RouteErrorBoundary`; o
+  `AppErrorBoundary` é a rede de segurança final. Rotas inexistentes exibem a página 404.
+- **DI**: `createContainer` monta HttpClient e adapters; a UI recebe portas via
+  `useContainer`, nunca implementações concretas.
+
 ## Qualidade
 
 - O `pre-commit` (Husky + lint-staged) roda ESLint e Prettier apenas nos arquivos em stage.
