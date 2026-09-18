@@ -61,3 +61,19 @@ test('exibe a página 404 para rota inexistente', async ({ page }) => {
     page.getByRole('heading', { level: 1, name: /página não encontrada/i }),
   ).toBeVisible();
 });
+
+test('data grid: busca, pagina e reflete o estado na URL', async ({ page }) => {
+  await page.goto('/examples/data-grid');
+
+  await expect(page.getByText(/exibindo 1–10 de 42/i)).toBeVisible();
+
+  // Paginação reflete na URL.
+  await page.getByRole('button', { name: /próxima página/i }).click();
+  await expect(page).toHaveURL(/page=2/);
+  await expect(page.getByText(/exibindo 11–20 de 42/i)).toBeVisible();
+
+  // Busca reflete na URL e filtra.
+  await page.getByRole('searchbox').fill('Usuário 42');
+  await expect(page).toHaveURL(/search=/);
+  await expect(page.getByRole('cell', { name: 'Usuário 42' })).toBeVisible();
+});

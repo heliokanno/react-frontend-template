@@ -70,3 +70,15 @@ export { Skeleton } from './skeleton/Skeleton';
 export { Spinner, type SpinnerProps } from './spinner/Spinner';
 export { EmptyState, type EmptyStateProps } from './empty-state/EmptyState';
 export { ErrorState, type ErrorStateProps } from './error-state/ErrorState';
+
+export {
+  DataGrid,
+  type DataGridProps,
+  DataGridColumnHeader,
+  DataGridToolbar,
+  DataGridPagination,
+  DataGridRowActions,
+  useDataGridUrlState,
+  type DataGridUrlState,
+  type DataGridUrlStateActions,
+} from './data-grid';
