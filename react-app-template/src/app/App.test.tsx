@@ -2,24 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { App } from '@/app/App';
-import { ThemeProvider } from '@/shared/design-system/theme/ThemeProvider';
-import { ToastProvider } from '@/shared/ui/toast/ToastProvider';
-import { TooltipProvider } from '@/shared/ui/tooltip/Tooltip';
 
 describe('App', () => {
-  it('renderiza a página de referência do Design System', () => {
-    render(
-      <ThemeProvider>
-        <TooltipProvider>
-          <ToastProvider>
-            <App />
-          </ToastProvider>
-        </TooltipProvider>
-      </ThemeProvider>,
-    );
+  it('renderiza a rota inicial (referência de tokens)', async () => {
+    render(<App />);
 
+    // A página inicial é lazy; aguardamos o heading aparecer.
     expect(
-      screen.getByRole('heading', { level: 1, name: /design system — tokens/i }),
+      await screen.findByRole('heading', { level: 1, name: /design system — tokens/i }),
     ).toBeInTheDocument();
   });
 });

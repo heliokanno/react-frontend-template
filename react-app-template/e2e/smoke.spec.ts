@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-// Fluxo de fumaça: garante que a aplicação sobe e renderiza a página de referência.
+// A rota raiz exibe a página de referência do Design System.
 test('a aplicação carrega e exibe a referência de tokens', async ({ page }) => {
   await page.goto('/');
 
@@ -45,4 +45,19 @@ test('exibe um toast ao acionar', async ({ page }) => {
   await page.getByRole('button', { name: /exibir toast/i }).click();
   const notifications = page.getByRole('region', { name: 'Notificações' });
   await expect(notifications).toContainText(/alterações salvas/i);
+});
+
+test('redireciona rota protegida para o login', async ({ page }) => {
+  await page.goto('/dashboard');
+
+  await expect(page).toHaveURL(/\/login$/);
+  await expect(page.getByRole('heading', { level: 1, name: /entrar/i })).toBeVisible();
+});
+
+test('exibe a página 404 para rota inexistente', async ({ page }) => {
+  await page.goto('/rota-inexistente');
+
+  await expect(
+    page.getByRole('heading', { level: 1, name: /página não encontrada/i }),
+  ).toBeVisible();
 });

@@ -1,4 +1,5 @@
 import type { AppError } from '@/infrastructure/errors/AppError';
+import { toAppError } from '@/infrastructure/errors/toAppError';
 
 /**
  * Estado assíncrono padronizado como discriminated union, para a UI tratar
@@ -38,7 +39,8 @@ export function toAsyncState<T>(query: QueryLike<T>): AsyncState<T> {
     return { status: 'loading' };
   }
   if (query.isError) {
-    return { status: 'error', error: query.error as AppError };
+    // Normaliza o erro (nativo ou já AppError) na borda de leitura.
+    return { status: 'error', error: toAppError(query.error) };
   }
   if (query.data === undefined || isEmpty(query.data)) {
     return { status: 'empty' };

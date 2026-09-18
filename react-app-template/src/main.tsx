@@ -2,10 +2,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { App } from '@/app/App';
-import { QueryProvider } from '@/app/providers/QueryProvider';
-import { ThemeProvider } from '@/shared/design-system/theme/ThemeProvider';
-import { ToastProvider } from '@/shared/ui/toast/ToastProvider';
-import { TooltipProvider } from '@/shared/ui/tooltip/Tooltip';
 
 import './index.css';
 
@@ -17,14 +13,6 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <QueryProvider>
-      <ThemeProvider>
-        <TooltipProvider>
-          <ToastProvider>
-            <App />
-          </ToastProvider>
-        </TooltipProvider>
-      </ThemeProvider>
-    </QueryProvider>
+    <App />
   </StrictMode>,
 );
