@@ -88,6 +88,28 @@ src/shared/design-system/
 - **Página de referência**: a `TokensReferencePage` exibe cores, tipografia, espaçamento,
   radius e sombras, com toggle de tema — útil para validar a linguagem visual.
 
+## Componentes (catálogo do núcleo)
+
+Os primitivos reutilizáveis ficam em `src/shared/ui/`, com API pública em
+`src/shared/ui/index.ts`. São construídos sobre os tokens do Design System e primitivos
+headless do Radix, priorizando composição sobre configuração.
+
+```text
+src/shared/ui/
+├── button/ input/ textarea/ label/ select/ checkbox/ radio-group/ switch/
+├── alert/ badge/ toast/ tooltip/
+├── dialog/ drawer/ dropdown/
+├── skeleton/ spinner/ empty-state/ error-state/
+└── index.ts
+```
+
+- **Composição**: componentes complexos expõem subcomponentes (ex.: `Dialog` →
+  `DialogTrigger`/`DialogContent`/`DialogHeader`/...), evitando props booleanas em excesso.
+- **Acessibilidade**: overlays (Dialog/Drawer/Dropdown/Tooltip) via Radix (foco, teclado,
+  `Escape`); feedback comunicado por ícone + texto, não só cor; foco visível por token.
+- **Providers**: `TooltipProvider` e `ToastProvider` são montados em `main.tsx`; use
+  `useToast()` para disparar toasts.
+
 ## Qualidade
 
 - O `pre-commit` (Husky + lint-staged) roda ESLint e Prettier apenas nos arquivos em stage.

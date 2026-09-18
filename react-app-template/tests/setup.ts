@@ -20,6 +20,21 @@ if (!window.matchMedia) {
   });
 }
 
+// Os primitivos do Radix (menus, select) usam APIs de ponteiro e layout que o
+// jsdom não implementa. Polyfills mínimos para permitir testá-los.
+if (!Element.prototype.hasPointerCapture) {
+  Element.prototype.hasPointerCapture = () => false;
+}
+if (!Element.prototype.setPointerCapture) {
+  Element.prototype.setPointerCapture = () => undefined;
+}
+if (!Element.prototype.releasePointerCapture) {
+  Element.prototype.releasePointerCapture = () => undefined;
+}
+if (!Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = () => undefined;
+}
+
 // Fronteira de rede mockada por MSW durante os testes (ver testing.md).
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 

@@ -1,3 +1,5 @@
+import { ComponentsShowcase } from './ComponentsShowcase';
+
 import { ThemeToggle } from '@/shared/design-system/theme/ThemeToggle';
 
 type Swatch = { readonly name: string; readonly variable: string };
@@ -142,6 +144,8 @@ export function TokensReferencePage() {
           ))}
         </div>
       </section>
+
+      <ComponentsShowcase />
     </div>
   );
 }
