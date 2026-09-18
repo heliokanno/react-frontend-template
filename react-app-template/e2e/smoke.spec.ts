@@ -77,3 +77,26 @@ test('data grid: busca, pagina e reflete o estado na URL', async ({ page }) => {
   await expect(page).toHaveURL(/search=/);
   await expect(page.getByRole('cell', { name: 'Usuário 42' })).toBeVisible();
 });
+
+test('formulário: valida, submete e mapeia erro de campo da API', async ({ page }) => {
+  await page.goto('/examples/form');
+
+  // Submissão vazia mostra erros de validação.
+  await page.getByRole('button', { name: /salvar/i }).click();
+  await expect(page.getByText(/nome é obrigatório/i)).toBeVisible();
+
+  // Preenche com e-mail que o "backend" rejeita.
+  await page.getByLabel(/nome/i).fill('Ana');
+  await page.getByLabel(/e-mail/i).fill('duplicado@exemplo.com');
+  await page.getByRole('combobox', { name: /perfil/i }).click();
+  await page.getByRole('option', { name: /editor/i }).click();
+  await page.getByRole('checkbox', { name: /aceito os termos/i }).click();
+  await page.getByRole('button', { name: /salvar/i }).click();
+
+  await expect(page.getByText(/este e-mail já está em uso/i)).toBeVisible();
+
+  // Corrige o e-mail e submete com sucesso.
+  await page.getByLabel(/e-mail/i).fill('ana@exemplo.com');
+  await page.getByRole('button', { name: /salvar/i }).click();
+  await expect(page.getByText(/enviado com sucesso/i)).toBeVisible();
+});

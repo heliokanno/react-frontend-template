@@ -35,6 +35,15 @@ if (!Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = () => undefined;
 }
 
+// jsdom não implementa ResizeObserver (usado por primitivos Radix como Select).
+if (!globalThis.ResizeObserver) {
+  globalThis.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}
+
 // Fronteira de rede mockada por MSW durante os testes (ver testing.md).
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 

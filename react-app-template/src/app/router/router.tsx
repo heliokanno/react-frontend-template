@@ -23,6 +23,9 @@ const DashboardPage = lazy(() =>
 const DataGridExamplePage = lazy(() =>
   import('@/app/pages/DataGridExamplePage').then((m) => ({ default: m.DataGridExamplePage })),
 );
+const FormExamplePage = lazy(() =>
+  import('@/app/pages/FormExamplePage').then((m) => ({ default: m.FormExamplePage })),
+);
 
 /** Fallback de carregamento para chunks preguiçosos. */
 function PageFallback() {
@@ -45,6 +48,7 @@ export const routes: RouteObject[] = [
     children: [
       { path: ROUTES.root, element: lazyPage(<TokensReferencePage />) },
       { path: ROUTES.dataGridExample, element: lazyPage(<DataGridExamplePage />) },
+      { path: ROUTES.formExample, element: lazyPage(<FormExamplePage />) },
       {
         path: ROUTES.dashboard,
         element: <ProtectedRoute>{lazyPage(<DashboardPage />)}</ProtectedRoute>,
