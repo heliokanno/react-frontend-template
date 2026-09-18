@@ -2,9 +2,9 @@
 
 ## Objetivo
 
-Ao concluir uma task, esta Skill deve revisar todo o trabalho realizado, validar a implementação e criar um commit seguindo os padrões definidos pelo projeto.
+Ao concluir uma task, esta Skill deve revisar todo o trabalho realizado, validar a implementação, criar um commit em uma branch dedicada e abrir uma Pull Request para a `main`, seguindo os padrões definidos pelo projeto.
 
-O objetivo é garantir que cada task concluída resulte em um commit limpo, consistente e de fácil rastreabilidade.
+O objetivo é garantir que cada task concluída resulte em um commit limpo, consistente e de fácil rastreabilidade, entregue por meio de uma branch própria e uma Pull Request para revisão, sem alterar a `main` diretamente.
 
 A Skill é capaz de identificar automaticamente alterações realizadas tanto no código da aplicação quanto nos artefatos do Kiro, gerando commits adequados para cada contexto.
 
@@ -325,9 +325,52 @@ Motivo da alteração:
 
 ---
 
-### 10. Criar o Commit
+### 10. Criar a branch da task
 
-Criar o commit utilizando a mensagem gerada:
+Todo commit deve ocorrer em uma branch dedicada, nunca diretamente na `main`.
+
+Antes de commitar:
+
+1. Garantir que a base está atualizada:
+
+```bash
+git switch main
+git pull --ff-only
+```
+
+2. Criar e alternar para a branch da task a partir da `main`:
+
+```bash
+git switch -c <tipo>/<escopo>-<descricao-kebab>
+```
+
+#### 10.1 Convenção de nome da branch
+
+Derivar o nome da branch da mensagem do commit:
+
+```text
+<tipo>/<escopo>-<descricao-kebab>
+```
+
+* `tipo`: mesmo tipo do Conventional Commits (`feat`, `fix`, `docs`, etc.).
+* `escopo`: mesmo escopo automático determinado pelo caminho dos arquivos (`spec`, `skill`, `steering`, `backend`, etc.).
+* `descricao-kebab`: descrição curta em kebab-case, em português, sem acentos.
+
+Exemplos:
+
+```text
+feat/skill-commit-de-task
+docs/spec-roadmap-e-specs
+feat/steering-padrao-de-arquitetura
+```
+
+**Nunca commitar diretamente na `main`.** Se a task foi iniciada com a `main` ativa, criar a branch antes do commit.
+
+---
+
+### 11. Criar o Commit
+
+Com a branch da task ativa, criar o commit utilizando a mensagem gerada:
 
 ```bash
 git commit -m "mensagem"
@@ -341,25 +384,89 @@ git commit -m "tipo(escopo): descrição" -m "corpo do commit"
 
 **Nunca executar automaticamente:**
 
-* `git push`
 * `git push --force`
 * `git commit --amend`
 
 ---
 
-### 11. Exibir o resultado
+### 12. Push da branch
+
+Enviar a branch da task para o remoto, configurando o tracking:
+
+```bash
+git push -u origin <tipo>/<escopo>-<descricao-kebab>
+```
+
+Regras:
+
+* Fazer push **apenas** da branch da task.
+* **Nunca** fazer push na branch `main`.
+* **Nunca** usar `git push --force`.
+
+---
+
+### 13. Abrir a Pull Request
+
+Abrir uma Pull Request da branch da task para a `main`, usando o GitHub CLI (`gh`).
+
+```bash
+gh pr create --base main --head <tipo>/<escopo>-<descricao-kebab> \
+  --title "tipo(escopo): descrição curta" \
+  --body "corpo da PR"
+```
+
+Regras da PR:
+
+* **Título**: igual à primeira linha do commit (Conventional Commits), no máximo 70 caracteres.
+* **Base**: sempre `main`.
+* **Corpo**: reaproveitar o corpo do commit, estruturado em:
+
+```text
+## Resumo
+- O que foi entregue
+
+## O que foi feito
+- Item 1
+- Item 2
+
+## Como testar / validar
+- Passos ou comandos de validação (ex.: pnpm typecheck, lint, test)
+
+## Observações
+- Itens opcionais (ex.: artefatos do Kiro atualizados, specs relacionadas)
+```
+
+* O **merge da PR é manual**: a Skill **não** faz merge automático da PR.
+
+Fallback quando o `gh` não estiver disponível ou autenticado:
+
+* Não interromper o trabalho já concluído (commit e push permanecem válidos).
+* Informar o usuário e fornecer o link para abrir a PR manualmente:
+
+```bash
+# obter a URL de comparação para abrir a PR no navegador
+git remote get-url origin
+```
+
+* Orientar o usuário a abrir a PR pela interface do GitHub a partir da branch enviada.
+
+---
+
+### 14. Exibir o resultado
 
 Ao finalizar, apresentar um relatório completo.
 
-#### 11.1 Informações do commit
+#### 14.1 Informações do commit e da PR
 
+* Nome da branch criada
 * Hash do commit (curto)
 * Mensagem utilizada
 * Quantidade de arquivos
 * Linhas adicionadas
 * Linhas removidas
+* URL da Pull Request aberta (ou link para abertura manual, no fallback)
 
-#### 11.2 Código (quando aplicável)
+#### 14.2 Código (quando aplicável)
 
 * Funcionalidades implementadas
 * Bugs corrigidos
@@ -367,7 +474,7 @@ Ao finalizar, apresentar um relatório completo.
 * Testes
 * Documentação
 
-#### 11.3 Artefatos do Kiro (quando aplicável)
+#### 14.3 Artefatos do Kiro (quando aplicável)
 
 * Specs alteradas
 * Skills alteradas
@@ -377,7 +484,7 @@ Ao finalizar, apresentar um relatório completo.
 * Prompts alterados
 * Templates alterados
 
-#### 11.4 Resumo funcional
+#### 14.4 Resumo funcional
 
 Gerar uma frase resumindo a entrega.
 
@@ -388,8 +495,10 @@ Exemplo:
 Comandos úteis para obter as informações:
 
 ```bash
+git branch --show-current
 git log -1 --pretty=format:"%h %s"
 git diff --stat HEAD~1
+gh pr view --json url --jq .url
 ```
 
 ---
@@ -399,6 +508,8 @@ git diff --stat HEAD~1
 ### Sempre
 
 * Criar apenas um commit por task concluída.
+* Criar uma branch dedicada por task, a partir da `main` atualizada.
+* Nomear a branch no padrão `<tipo>/<escopo>-<descricao-kebab>`.
 * Seguir Conventional Commits.
 * Manter commits pequenos e focados.
 * Classificar automaticamente alterações em código e artefatos do Kiro.
@@ -410,10 +521,15 @@ git diff --stat HEAD~1
 * Validar os testes.
 * Usar `git add` com arquivos específicos (nunca `git add .` ou `git add -A`).
 * Priorizar automaticamente a alteração principal quando houver múltiplos tipos de arquivos.
+* Fazer push da branch da task (com `-u`).
+* Abrir uma Pull Request da branch da task para a `main` via `gh`.
 
 ### Nunca
 
-* Fazer push automaticamente.
+* Commitar diretamente na branch `main`.
+* Fazer push na branch `main`.
+* Usar `git push --force`.
+* Fazer merge da PR automaticamente (o merge é manual).
 * Ignorar testes falhando.
 * Commitar credenciais, tokens ou chaves de API.
 * Commitar arquivos temporários.
@@ -427,8 +543,15 @@ git diff --stat HEAD~1
 
 ## Resultado Esperado
 
-Ao finalizar a execução da Skill, deve existir um único commit limpo, validado e documentado, representando exatamente uma task concluída.
+Ao finalizar a execução da Skill, deve existir:
 
-O commit deve ser facilmente compreendido por qualquer desenvolvedor do projeto e estar em conformidade com os padrões de desenvolvimento adotados pela equipe.
+* uma branch dedicada à task, nomeada no padrão `<tipo>/<escopo>-<descricao-kebab>`;
+* um único commit limpo, validado e documentado nessa branch, representando exatamente uma task concluída;
+* a branch enviada ao remoto (push com tracking);
+* uma Pull Request aberta da branch para a `main`, pronta para revisão e merge manual.
+
+O commit e a PR devem ser facilmente compreendidos por qualquer desenvolvedor do projeto e estar em conformidade com os padrões de desenvolvimento adotados pela equipe.
+
+A branch `main` nunca é alterada diretamente: toda mudança chega a ela por meio de uma Pull Request.
 
 O histórico Git deve representar corretamente tanto alterações no código quanto nos artefatos do Kiro.
