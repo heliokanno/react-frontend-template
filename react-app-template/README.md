@@ -172,6 +172,20 @@ estados e responsividade.
 - **Estados**: loading (skeleton de linhas), empty (EmptyState) e error (ErrorState com retry).
 - **Exemplo**: rota `/examples/data-grid` (`DataGridExamplePage`) demonstra o uso ponta a ponta.
 
+## Formulários
+
+A infraestrutura de formulários fica em `src/shared/ui/form/`, sobre React Hook Form + Zod
+(fonte única de schema e tipos). Os campos compõem os controles de `shared/ui`.
+
+- **Form**: wrapper com `FormProvider` e submit; a validação vem do resolver Zod.
+- **Campos**: `TextField`, `TextareaField`, `SelectField`, `CheckboxField` — associam
+  label, descrição e erro de forma acessível (`aria-describedby`/`aria-invalid`).
+- **Submissão**: `useFormSubmit` gerencia loading/success/error, bloqueia duplo submit e
+  preserva os dados após falha.
+- **Erros da API**: `applyApiErrors` mapeia erros de campo (`ProblemDetail`/`AppError`) para
+  os campos; erros gerais viram mensagem para Alert/Toast.
+- **Exemplo**: rota `/examples/form` (`FormExamplePage`).
+
 ## Qualidade
 
 - O `pre-commit` (Husky + lint-staged) roda ESLint e Prettier apenas nos arquivos em stage.

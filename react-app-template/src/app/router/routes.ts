@@ -10,6 +10,7 @@ export const ROUTES = {
   login: '/login',
   dashboard: '/dashboard',
   dataGridExample: '/examples/data-grid',
+  formExample: '/examples/form',
   notFound: '*',
 } as const;
 
