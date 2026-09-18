@@ -1,0 +1,88 @@
+/**
+ * Semantic tokens — intenção de uso.
+ *
+ * Componentes consomem ESTES tokens (nunca os primitivos diretamente).
+ * Os valores mudam por tema: o tema claro é o padrão em :root; o tema escuro
+ * é aplicado quando o elemento raiz tem a classe `.dark` (definida pelo
+ * ThemeProvider). Componentes não conhecem o tema — só o token semântico.
+ *
+ * Ver `.kiro/steering/design-system.md` → Color Tokens / Dark Mode.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Texto */
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-600);
+  --color-text-muted: var(--color-neutral-500);
+  --color-text-on-accent: var(--color-neutral-0);
+  --color-text-inverse: var(--color-neutral-0);
+
+  /* Superfícies */
+  --color-surface-default: var(--color-neutral-0);
+  --color-surface-subtle: var(--color-neutral-50);
+  --color-surface-elevated: var(--color-neutral-0);
+  --color-surface-inverse: var(--color-neutral-900);
+
+  /* Bordas */
+  --color-border-default: var(--color-neutral-200);
+  --color-border-strong: var(--color-neutral-300);
+
+  /* Ação (acento funcional) */
+  --color-action-primary: var(--color-accent-600);
+  --color-action-primary-hover: var(--color-accent-700);
+  --color-action-primary-active: var(--color-accent-800);
+
+  /* Feedback */
+  --color-feedback-success: var(--color-success-600);
+  --color-feedback-success-surface: var(--color-success-50);
+  --color-feedback-warning: var(--color-warning-600);
+  --color-feedback-warning-surface: var(--color-warning-50);
+  --color-feedback-error: var(--color-error-600);
+  --color-feedback-error-surface: var(--color-error-50);
+  --color-feedback-info: var(--color-info-600);
+  --color-feedback-info-surface: var(--color-info-50);
+
+  /* Foco (usado pelos primitivos) */
+  --color-focus-ring: var(--color-accent-600);
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* Texto */
+  --color-text-primary: var(--color-neutral-50);
+  --color-text-secondary: var(--color-neutral-300);
+  --color-text-muted: var(--color-neutral-400);
+  --color-text-on-accent: var(--color-neutral-0);
+  --color-text-inverse: var(--color-neutral-900);
+
+  /* Superfícies */
+  --color-surface-default: var(--color-neutral-900);
+  --color-surface-subtle: var(--color-neutral-950);
+  --color-surface-elevated: var(--color-neutral-800);
+  --color-surface-inverse: var(--color-neutral-50);
+
+  /* Bordas */
+  --color-border-default: var(--color-neutral-700);
+  --color-border-strong: var(--color-neutral-600);
+
+  /* Ação (acento com contraste ajustado para fundo escuro) */
+  --color-action-primary: var(--color-accent-500);
+  --color-action-primary-hover: var(--color-accent-400);
+  --color-action-primary-active: var(--color-accent-300);
+
+  /* Feedback (superfícies escuras usam o tom forte como base sutil) */
+  --color-feedback-success: var(--color-success-500);
+  --color-feedback-success-surface: var(--color-success-700);
+  --color-feedback-warning: var(--color-warning-500);
+  --color-feedback-warning-surface: var(--color-warning-700);
+  --color-feedback-error: var(--color-error-500);
+  --color-feedback-error-surface: var(--color-error-700);
+  --color-feedback-info: var(--color-info-500);
+  --color-feedback-info-surface: var(--color-info-700);
+
+  /* Foco */
+  --color-focus-ring: var(--color-accent-400);
+}

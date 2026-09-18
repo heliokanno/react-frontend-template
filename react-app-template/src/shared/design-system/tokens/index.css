@@ -1,0 +1,12 @@
+/**
+ * Agregador dos tokens do Design System.
+ *
+ * Importado uma única vez pelo CSS global da aplicação. A ordem importa:
+ * primitivos primeiro (valores brutos), depois os semânticos (que referenciam
+ * os primitivos e variam por tema), depois tipografia e espaçamento.
+ */
+
+@import './primitives.css';
+@import './semantic.css';
+@import './typography.css';
+@import './spacing.css';

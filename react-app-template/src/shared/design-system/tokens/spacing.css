@@ -1,0 +1,21 @@
+/**
+ * Tokens semânticos de espaçamento — relacionamento entre elementos.
+ *
+ * Comunicam proximidade/separação (ver `.kiro/steering/design-system.md`
+ * → Layout Spacing). Mapeiam a escala primitiva para papéis de uso.
+ */
+
+:root {
+  /* Espaço entre elementos fortemente relacionados (ex.: label → input) */
+  --space-inline-tight: var(--space-1);
+  --space-inline: var(--space-2);
+
+  /* Espaço entre campos/itens de um mesmo grupo */
+  --space-stack: var(--space-4);
+
+  /* Espaço entre grupos/seções distintas */
+  --space-section: var(--space-8);
+
+  /* Padding interno de containers */
+  --space-container: var(--space-6);
+}
