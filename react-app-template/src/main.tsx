@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 
 import { App } from '@/app/App';
 import { ThemeProvider } from '@/shared/design-system/theme/ThemeProvider';
+import { ToastProvider } from '@/shared/ui/toast/ToastProvider';
+import { TooltipProvider } from '@/shared/ui/tooltip/Tooltip';
 
 import './index.css';
 
@@ -15,7 +17,11 @@ if (!rootElement) {
 createRoot(rootElement).render(
   <StrictMode>
     <ThemeProvider>
-      <App />
+      <TooltipProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </TooltipProvider>
     </ThemeProvider>
   </StrictMode>,
 );

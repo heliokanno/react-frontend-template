@@ -16,3 +16,33 @@ test('permite alternar para o tema escuro', async ({ page }) => {
 
   await expect(page.locator('html')).toHaveClass(/dark/);
 });
+
+test('abre o dialog e o fecha com Escape', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByRole('button', { name: /abrir dialog/i }).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText(/confirmar exclusão/i);
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+});
+
+test('abre o dropdown de ações e navega por teclado', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByRole('button', { name: 'Ações' }).click();
+  await expect(page.getByRole('menuitem', { name: /editar/i })).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('menuitem', { name: /editar/i })).toBeHidden();
+});
+
+test('exibe um toast ao acionar', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByRole('button', { name: /exibir toast/i }).click();
+  const notifications = page.getByRole('region', { name: 'Notificações' });
+  await expect(notifications).toContainText(/alterações salvas/i);
+});
