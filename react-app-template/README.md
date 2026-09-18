@@ -158,6 +158,20 @@ src/app/
 - **DI**: `createContainer` monta HttpClient e adapters; a UI recebe portas via
   `useContainer`, nunca implementações concretas.
 
+## Data Grid
+
+O grid reutilizável do núcleo fica em `src/shared/ui/data-grid/`, sobre `@tanstack/react-table`.
+É composável: a feature fornece as colunas e os dados; o grid trata ordenação, seleção,
+estados e responsividade.
+
+- **Composição**: `DataGrid` + `DataGridColumnHeader` (sort/`aria-sort`), `DataGridToolbar`
+  (busca + filtros), `DataGridPagination`, `DataGridRowActions`.
+- **URL state**: `useDataGridUrlState` reflete busca, página e ordenação na URL (refresh,
+  deep link e compartilhável). Por padrão o grid opera em modo server-side (`manual*`),
+  cabendo à feature ligar os parâmetros à query.
+- **Estados**: loading (skeleton de linhas), empty (EmptyState) e error (ErrorState com retry).
+- **Exemplo**: rota `/examples/data-grid` (`DataGridExamplePage`) demonstra o uso ponta a ponta.
+
 ## Qualidade
 
 - O `pre-commit` (Husky + lint-staged) roda ESLint e Prettier apenas nos arquivos em stage.

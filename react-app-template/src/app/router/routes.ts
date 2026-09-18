@@ -9,6 +9,7 @@ export const ROUTES = {
   root: '/',
   login: '/login',
   dashboard: '/dashboard',
+  dataGridExample: '/examples/data-grid',
   notFound: '*',
 } as const;
 
