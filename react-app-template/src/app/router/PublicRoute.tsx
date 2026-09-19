@@ -2,7 +2,8 @@ import { type ReactNode } from 'react';
 import { Navigate } from 'react-router';
 
 import { ROUTES } from './routes';
-import { useSession } from './session';
+
+import { useAuth } from '@/features/auth';
 
 type PublicRouteProps = {
   readonly children: ReactNode;
@@ -13,7 +14,7 @@ type PublicRouteProps = {
  * a área interna, evitando que usuários logados vejam a tela de login.
  */
 export function PublicRoute({ children }: PublicRouteProps) {
-  const session = useSession();
+  const session = useAuth();
 
   if (session.status === 'authenticated') {
     return <Navigate to={ROUTES.dashboard} replace />;

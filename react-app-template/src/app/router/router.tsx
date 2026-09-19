@@ -5,7 +5,6 @@ import { NotFoundPage } from '@/app/error/NotFoundPage';
 import { RouteErrorBoundary } from '@/app/error/RouteErrorBoundary';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { RootLayout } from '@/app/layouts/RootLayout';
-import { LoginPage } from '@/app/pages/LoginPage';
 import { ProtectedRoute } from '@/app/router/ProtectedRoute';
 import { PublicRoute } from '@/app/router/PublicRoute';
 import { ROUTES } from '@/app/router/routes';
@@ -26,6 +25,7 @@ const DataGridExamplePage = lazy(() =>
 const FormExamplePage = lazy(() =>
   import('@/app/pages/FormExamplePage').then((m) => ({ default: m.FormExamplePage })),
 );
+const LoginPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.LoginPage })));
 
 /** Fallback de carregamento para chunks preguiçosos. */
 function PageFallback() {
@@ -61,11 +61,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         path: ROUTES.login,
-        element: (
-          <PublicRoute>
-            <LoginPage />
-          </PublicRoute>
-        ),
+        element: <PublicRoute>{lazyPage(<LoginPage />)}</PublicRoute>,
       },
     ],
   },
