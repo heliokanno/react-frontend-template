@@ -100,3 +100,14 @@ test('formulário: valida, submete e mapeia erro de campo da API', async ({ page
   await page.getByRole('button', { name: /salvar/i }).click();
   await expect(page.getByText(/enviado com sucesso/i)).toBeVisible();
 });
+
+test('login: valida campos obrigatórios', async ({ page }) => {
+  await page.goto('/login');
+
+  await expect(page.getByRole('heading', { level: 1, name: /entrar/i })).toBeVisible();
+
+  // Submissão vazia dispara validação de campo.
+  await page.getByRole('button', { name: /entrar/i }).click();
+  await expect(page.getByText(/e-mail é obrigatório/i)).toBeVisible();
+  await expect(page.getByText(/senha é obrigatória/i)).toBeVisible();
+});

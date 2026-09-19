@@ -186,6 +186,25 @@ A infraestrutura de formulários fica em `src/shared/ui/form/`, sobre React Hook
   os campos; erros gerais viram mensagem para Alert/Toast.
 - **Exemplo**: rota `/examples/form` (`FormExamplePage`).
 
+## Autenticação e sessão
+
+A autenticação é uma feature isolada em `src/features/auth/` (arquitetura hexagonal), com a
+UI consumindo apenas abstrações — nunca detalhes de token.
+
+- **Uso**: `useAuth()` (status, `user`, `login`, `logout`) e `useCurrentUser()`.
+- **Camadas**: `domain` (Session), `application` (portas Login/Logout/RefreshSession +
+  serviços), `infrastructure` (HttpAuthGateway + mapper, tokenStorage, fake in-memory,
+  interceptor de token), `ui` (AuthProvider, hooks, LoginPage).
+- **Token**: injetado nas requisições por um interceptor do HttpClient (o `AccessTokenHolder`
+  é atualizado pela sessão). Componentes não manipulam token.
+- **Sessão**: recuperada no bootstrap via refresh silencioso; persistida por `tokenStorage`
+  (localStorage por padrão — veja o trade-off documentado no próprio arquivo; prefira cookie
+  httpOnly quando o backend suportar).
+- **Guards (005)**: `ProtectedRoute` usa `useAuth`, redireciona ao login preservando o destino
+  e o restaura após autenticar. A tela de login usa a infraestrutura de formulários (007).
+
+> Autorização real é sempre do backend; a UI não é mecanismo de segurança.
+
 ## Qualidade
 
 - O `pre-commit` (Husky + lint-staged) roda ESLint e Prettier apenas nos arquivos em stage.

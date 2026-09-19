@@ -2,8 +2,8 @@ import { type ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router';
 
 import { ROUTES } from './routes';
-import { useSession } from './session';
 
+import { useAuth } from '@/features/auth';
 import { Spinner } from '@/shared/ui';
 
 type ProtectedRouteProps = {
@@ -11,12 +11,12 @@ type ProtectedRouteProps = {
 };
 
 /**
- * Guard de rota protegida. Consome a abstração de sessão (stub até a spec 008).
+ * Guard de rota protegida. Consome a sessão real via `useAuth` (008).
  * Enquanto a sessão carrega, exibe loading; sem sessão, redireciona ao login
  * preservando o destino original em `state.from`.
  */
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const session = useSession();
+  const session = useAuth();
   const location = useLocation();
 
   if (session.status === 'loading') {
