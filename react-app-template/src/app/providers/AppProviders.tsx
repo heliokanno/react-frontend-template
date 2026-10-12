@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 
 import { ContainerProvider } from '@/app/di/ContainerProvider';
+import { PermissionBridge } from '@/app/providers/PermissionBridge';
 import { QueryProvider } from '@/app/providers/QueryProvider';
 import { SessionProvider } from '@/app/providers/SessionProvider';
 import { ThemeProvider } from '@/shared/design-system/theme/ThemeProvider';
@@ -15,18 +16,20 @@ type AppProvidersProps = {
  * Compõe todos os providers globais em ordem previsível. Sem regra de negócio
  * (ver `.kiro/steering/frontend-architecture.md` → App Layer).
  *
- * Ordem: DI (container) → Query (server state) → Session (auth) → Theme → Tooltip → Toast.
+ * Ordem: DI → Query → Session (auth) → Permission → Theme → Tooltip → Toast.
  */
 export function AppProviders({ children }: AppProvidersProps) {
   return (
     <ContainerProvider>
       <QueryProvider>
         <SessionProvider>
-          <ThemeProvider>
-            <TooltipProvider>
-              <ToastProvider>{children}</ToastProvider>
-            </TooltipProvider>
-          </ThemeProvider>
+          <PermissionBridge>
+            <ThemeProvider>
+              <TooltipProvider>
+                <ToastProvider>{children}</ToastProvider>
+              </TooltipProvider>
+            </ThemeProvider>
+          </PermissionBridge>
         </SessionProvider>
       </QueryProvider>
     </ContainerProvider>

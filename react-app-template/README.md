@@ -205,6 +205,22 @@ UI consumindo apenas abstrações — nunca detalhes de token.
 
 > Autorização real é sempre do backend; a UI não é mecanismo de segurança.
 
+## Autorização (permissões)
+
+A autorização de UI fica em `src/shared/authorization/`. Adapta a experiência conforme as
+permissões do usuário (vindas da sessão). **É UX, não segurança — a autorização real é
+sempre do backend.**
+
+- **Modelo**: permissões tipadas no formato `recurso:ação` (ex.: `products:create`).
+- **Gating declarativo**: `<Can permission="...">...</Can>` (com `fallback` opcional).
+- **Programático**: `useHasPermission('recurso:ação')`.
+- **Guard de rota**: `ProtectedByPermission` exibe a `ForbiddenPage` (403) quando falta a
+  permissão; um 403 da API converge para a mesma experiência.
+- **Extensível**: `createPermissionRegistry` permite que features declarem suas permissões
+  sem editar o núcleo (conectado ao mecanismo de composição na spec 011).
+- As permissões vêm do `CurrentUser` da sessão; a camada `app` (`PermissionBridge`) injeta-as
+  no `PermissionProvider`, mantendo `shared/authorization` livre de acoplamento a features.
+
 ## Qualidade
 
 - O `pre-commit` (Husky + lint-staged) roda ESLint e Prettier apenas nos arquivos em stage.

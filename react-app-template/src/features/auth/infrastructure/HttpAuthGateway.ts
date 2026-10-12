@@ -10,12 +10,18 @@ type AuthResponseDto = {
     readonly id: string;
     readonly name: string;
     readonly email: string;
+    readonly permissions?: readonly string[];
   };
 };
 
 function toSession(dto: AuthResponseDto): Session {
   return {
-    user: { id: dto.user.id, name: dto.user.name, email: dto.user.email },
+    user: {
+      id: dto.user.id,
+      name: dto.user.name,
+      email: dto.user.email,
+      permissions: dto.user.permissions ?? [],
+    },
     tokens: {
       accessToken: dto.access_token,
       ...(dto.refresh_token !== undefined ? { refreshToken: dto.refresh_token } : {}),
