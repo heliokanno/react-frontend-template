@@ -58,6 +58,9 @@ Shell administrativo
 Extensibilidade e referência
    011 feature-extensibility
    012 dashboard-and-example-feature
+        ↓
+Distribuição
+   013 distributable-library
 ```
 
 ---
@@ -294,6 +297,27 @@ Extensibilidade e referência
 
 ---
 
+### 013 — distributable-library
+
+**Objetivo**: transformar o template, hoje uma aplicação Vite, em uma **biblioteca React distribuível** instalável em qualquer projeto, sem reescrever o núcleo.
+
+**Escopo**
+- Monorepo pnpm: `packages/core` (publicável) + `apps/playground` (demonstração, consome a lib como consumidor real).
+- Separação física núcleo × app: router, pages, layouts, `main.tsx`, `index.html` e `reference/*` vão para o playground.
+- Configuração injetável: remover `import.meta.env` do core; `httpConfig` vira factory alimentada pelo consumidor.
+- Entry points por subpath (`.`, `./ui`, `./design-system`, `./authorization`, `./auth`, `./http`, `./query`, `./styles.css`, `./tokens.css`).
+- Build ESM com tipos `.d.ts`; React e ecossistema como peers/externals.
+- Estilos: preset Tailwind v4 + tokens CSS (principal) e CSS pré-compilado (fallback), preservando tema/`.dark`.
+- `package.json` de publicação (`exports`, `files`, `sideEffects`, peers) e verificação de consumo via `pnpm pack`.
+
+**Dependências**: 012 (núcleo completo e validado antes de empacotar).
+
+**Entregável verificável**: pacote empacotado (`pnpm pack`) instalado em consumidor mínimo renderiza `Button` + `Form` com estilos; bundle sem React/peers; `lint`/`typecheck`/`test`/`build` verdes no monorepo.
+
+**Steerings-chave**: `product.md`, `frontend-architecture.md`, `hexagonal-architecture.md`, `tech.md`, `frontend-engineering.md`.
+
+---
+
 ## Matriz de dependências
 
 ```text
@@ -305,6 +329,8 @@ Extensibilidade e referência
                    └──────────────────────────┘                     └────────┼─> 012
                                                                               │
                               006 / 007 ─────────────────────────────────────┘
+
+012 ─> 013
 ```
 
 Resumo direto:
@@ -321,6 +347,7 @@ Resumo direto:
 - **010** depende de 005, 008, 009.
 - **011** depende de 005, 009, 010.
 - **012** depende de 006, 007, 010, 011.
+- **013** depende de 012.
 
 ---
 
@@ -340,5 +367,6 @@ Resumo direto:
 | 010 | admin-layout                  | Planejada   | 005, 008, 009        |
 | 011 | feature-extensibility         | Planejada   | 005, 009, 010        |
 | 012 | dashboard-and-example-feature | Planejada   | 006, 007, 010, 011   |
+| 013 | distributable-library         | Concluída   | 012                  |
 
 Atualizar a coluna **Status** conforme cada spec avança (Planejada → Em progresso → Concluída).
