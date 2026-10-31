@@ -1,6 +1,6 @@
 {
   "name": "@hmk/react-admin-kit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Fundação frontend React reutilizável: componentes, design system, autenticação, autorização de UI e camada HTTP.",
   "license": "MIT",
   "author": "Helio Makoto Kanno",

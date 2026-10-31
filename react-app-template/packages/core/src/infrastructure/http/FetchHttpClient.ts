@@ -28,6 +28,25 @@ function buildQueryString(query: HttpQuery | undefined): string {
 }
 
 /**
+ * Corpos que o `fetch` já sabe serializar sozinho (ex.: upload de arquivo via
+ * `FormData` — multipart; `Blob`; `URLSearchParams`; binários; streams; ou uma
+ * `string` pronta). Para esses, o cliente NÃO serializa em JSON e NÃO define o
+ * `Content-Type` — o browser define o cabeçalho correto (inclusive o boundary
+ * do multipart). Qualquer outro valor é tratado como JSON.
+ */
+function isRawBody(body: unknown): body is BodyInit {
+  return (
+    typeof body === 'string' ||
+    (typeof FormData !== 'undefined' && body instanceof FormData) ||
+    (typeof Blob !== 'undefined' && body instanceof Blob) ||
+    (typeof URLSearchParams !== 'undefined' && body instanceof URLSearchParams) ||
+    (typeof ArrayBuffer !== 'undefined' && body instanceof ArrayBuffer) ||
+    ArrayBuffer.isView(body) ||
+    (typeof ReadableStream !== 'undefined' && body instanceof ReadableStream)
+  );
+}
+
+/**
  * Implementação do HttpClient sobre `fetch` nativo. Centraliza base URL,
  * headers, timeout (via AbortController), parsing e interceptors. Só o adapter
  * conhece esses detalhes; a UI consome casos de uso.
@@ -81,15 +100,26 @@ export class FetchHttpClient implements HttpClient {
       options.signal.addEventListener('abort', () => controller.abort(), { once: true });
     }
 
+    const hasBody = body !== undefined;
+    const raw = hasBody && isRawBody(body);
+    // JSON só quando o corpo precisa ser serializado pelo cliente; para corpos
+    // "raw" (FormData/Blob/etc.) o browser define o Content-Type apropriado.
+    const jsonContentType = hasBody && !raw ? { 'Content-Type': 'application/json' } : {};
+    const bodyInit: Pick<RequestInit, 'body'> = raw
+      ? { body: body }
+      : hasBody
+        ? { body: JSON.stringify(body) }
+        : {};
+
     let init: RequestInit = {
       method,
       headers: {
         Accept: 'application/json',
-        ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+        ...jsonContentType,
         ...options?.headers,
       },
       signal: controller.signal,
-      ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+      ...bodyInit,
     };
 
     for (const interceptor of this.requestInterceptors) {
