@@ -1,6 +1,20 @@
-# React App Template
+# React Frontend Template (monorepo)
 
-Fundação técnica do template frontend React corporativo. Este diretório contém a aplicação; os artefatos do Kiro (specs, steerings, skills) ficam em `../.kiro/`.
+Fundação frontend React corporativa, empacotada como **biblioteca distribuível**. Este
+repositório é um monorepo pnpm:
+
+```text
+packages/core      → @hmk/react-admin-kit (biblioteca publicável)
+apps/playground    → app de demonstração que consome a lib (não publicável)
+```
+
+O núcleo reutilizável (componentes, design system, auth, autorização de UI, camada HTTP)
+vive em `packages/core`. O playground consome a lib pela sua **API pública**
+(`@hmk/react-admin-kit/*`), validando o contrato como um consumidor real.
+
+Para consumir a biblioteca em outro projeto, veja `packages/core/README.md`.
+
+Os artefatos do Kiro (specs, steerings, skills) ficam em `../.kiro/`.
 
 ## Stack
 
@@ -20,11 +34,17 @@ Fundação técnica do template frontend React corporativo. Este diretório cont
 Organização por feature com camadas hexagonais (ver `../.kiro/steering/hexagonal-architecture.md`):
 
 ```text
-src/
-├── app/              # bootstrap, providers, routing (evolui nas specs 005+)
-├── features/         # features de negócio (vazio no template)
-├── shared/           # código realmente compartilhado (config, ui, utils)
-└── infrastructure/   # HttpClient, storage, telemetry (evolui na spec 004)
+packages/core/src/
+├── entries/          # barrels públicos por subpath (ui, auth, http, ...)
+├── features/         # features do núcleo (ex.: auth)
+├── shared/           # ui, design-system, authorization, async
+├── infrastructure/   # HttpClient, errors, query
+└── styles/           # tokens.css, preset.css, styles.css (artefatos de estilo)
+
+apps/playground/src/
+├── app/              # bootstrap, providers, routing, composition root
+├── config/           # env (import.meta.env) — fica no consumidor
+└── demo/             # páginas/exemplos que consomem a lib
 ```
 
 A regra de dependência aponta para dentro: `UI → Application → Domain`; a infraestrutura
@@ -38,16 +58,22 @@ implementa as portas do núcleo. Nenhuma feature de negócio pertence ao núcleo
 ## Comandos
 
 ```bash
-pnpm install        # instala dependências
-pnpm dev            # dev server (executar manualmente no terminal)
-pnpm build          # build de produção
-pnpm preview        # preview do build
-pnpm lint           # ESLint
+pnpm install        # instala dependências (todo o workspace)
+pnpm dev            # dev server do playground (executar manualmente no terminal)
+pnpm build          # build da lib (packages/core) + playground
+pnpm build:lib      # build apenas da biblioteca
+pnpm lint           # ESLint (monorepo)
 pnpm format         # Prettier (escrita)
-pnpm typecheck      # checagem de tipos
-pnpm test           # testes (single run)
-pnpm test:watch     # testes em watch
-pnpm test:e2e       # testes end-to-end (Playwright)
+pnpm typecheck      # checagem de tipos (todos os pacotes)
+pnpm test           # testes (todos os pacotes, single run)
+pnpm test:e2e       # testes end-to-end (Playwright, no playground)
+```
+
+Comandos por pacote via `--filter`, por exemplo:
+
+```bash
+pnpm --filter @hmk/react-admin-kit build
+pnpm --filter @hmk/react-admin-kit-playground dev
 ```
 
 Antes do primeiro E2E, instale o navegador do Playwright:

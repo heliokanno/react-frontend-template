@@ -1,0 +1,8 @@
+/**
+ * Tokens do Design System (`@hmk/react-admin-kit/tokens.css`).
+ *
+ * Apenas variáveis CSS (primitivos → semânticos → tipografia → espaçamento),
+ * sem Tailwind. Importe quando quiser os tokens disponíveis no seu projeto
+ * (com ou sem Tailwind). O tema escuro usa a classe `.dark` na raiz.
+ */
+@import '../shared/design-system/tokens/index.css';

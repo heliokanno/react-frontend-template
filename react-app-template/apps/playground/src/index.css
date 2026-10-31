@@ -1,0 +1,29 @@
+/**
+ * CSS global do playground.
+ *
+ * Consome o preset Tailwind v4 da biblioteca (tokens + mapeamento de tema +
+ * variante .dark) e deixa o Tailwind escanear os componentes da lib.
+ *
+ * Nota: durante o desenvolvimento, apontamos para o código-fonte do core
+ * (relativo), evitando exigir o build de CSS antes de rodar o dev server. Um
+ * consumidor externo usaria:
+ *   @import '@hmk/react-admin-kit/tokens.css';
+ *   @import 'tailwindcss';
+ *   @import '@hmk/react-admin-kit/tailwind-preset.css';
+ * e incluiria o pacote em node_modules no scan do Tailwind.
+ */
+@import '../../../packages/core/src/shared/design-system/tokens/index.css';
+@import 'tailwindcss';
+@import '../../../packages/core/src/styles/preset.css';
+
+/* Escaneia os componentes da biblioteca para emitir as classes utilitárias. */
+@source '../../../packages/core/src';
+
+body {
+  margin: 0;
+  background-color: var(--color-surface-default);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
+}
