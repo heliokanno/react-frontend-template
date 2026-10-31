@@ -30,9 +30,29 @@ describe('HttpAuthGateway', () => {
     const session = await makeGateway().login({ email: 'ana@example.com', password: 'x' });
 
     expect(session).toEqual({
-      user: { id: '1', name: 'Ana', email: 'ana@example.com' },
+      user: { id: '1', name: 'Ana', email: 'ana@example.com', permissions: [] },
       tokens: { accessToken: 'at', refreshToken: 'rt' },
     });
+  });
+
+  it('mapeia as permissões do usuário quando presentes no DTO', async () => {
+    server.use(
+      http.post(`${baseUrl}/auth/login`, () =>
+        HttpResponse.json({
+          access_token: 'at',
+          user: {
+            id: '1',
+            name: 'Ana',
+            email: 'ana@example.com',
+            permissions: ['dashboard:view', 'products:create'],
+          },
+        }),
+      ),
+    );
+
+    const session = await makeGateway().login({ email: 'ana@example.com', password: 'x' });
+
+    expect(session.user.permissions).toEqual(['dashboard:view', 'products:create']);
   });
 
   it('traduz credenciais inválidas (401) para unauthorized', async () => {

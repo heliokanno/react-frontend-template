@@ -16,7 +16,12 @@ export class InMemoryAuthGateway implements AuthGateway {
     },
   ) {
     this.session = {
-      user: { id: '1', name: 'Usuário Teste', email: this.validCredentials.email },
+      user: {
+        id: '1',
+        name: 'Usuário Teste',
+        email: this.validCredentials.email,
+        permissions: ['dashboard:view'],
+      },
       tokens: { accessToken: 'access-token', refreshToken: 'refresh-token' },
     };
   }

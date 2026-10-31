@@ -2,7 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useContainer } from '@/app/di/useContainer';
 import { toAsyncState } from '@/shared/async/asyncState';
-import { Badge, ErrorState, Skeleton } from '@/shared/ui';
+import { Can } from '@/shared/authorization';
+import { Badge, Button, ErrorState, Skeleton } from '@/shared/ui';
 
 /**
  * Dashboard (placeholder). O dashboard orientado a decisões é entregue na spec
@@ -23,7 +24,13 @@ export function DashboardPage() {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4 p-6">
-      <h1 className="text-text-primary text-3xl font-bold">Dashboard</h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-text-primary text-3xl font-bold">Dashboard</h1>
+        {/* Ação visível apenas para quem tem a permissão (gating declarativo). */}
+        <Can permission="reports:export">
+          <Button variant="secondary">Exportar relatório</Button>
+        </Can>
+      </div>
       <p className="text-text-secondary">
         Área protegida de exemplo. O dashboard completo é implementado na spec 012.
       </p>

@@ -7,6 +7,8 @@ export type CurrentUser = {
   readonly id: string;
   readonly name: string;
   readonly email: string;
+  /** Permissões do usuário, obtidas do backend. Base para a autorização de UI (spec 009). */
+  readonly permissions: readonly string[];
 };
 
 /** Tokens da sessão. O refresh token pode não existir dependendo da estratégia. */

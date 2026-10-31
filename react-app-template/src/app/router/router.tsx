@@ -5,6 +5,7 @@ import { NotFoundPage } from '@/app/error/NotFoundPage';
 import { RouteErrorBoundary } from '@/app/error/RouteErrorBoundary';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { RootLayout } from '@/app/layouts/RootLayout';
+import { ProtectedByPermission } from '@/app/router/ProtectedByPermission';
 import { ProtectedRoute } from '@/app/router/ProtectedRoute';
 import { PublicRoute } from '@/app/router/PublicRoute';
 import { ROUTES } from '@/app/router/routes';
@@ -51,7 +52,13 @@ export const routes: RouteObject[] = [
       { path: ROUTES.formExample, element: lazyPage(<FormExamplePage />) },
       {
         path: ROUTES.dashboard,
-        element: <ProtectedRoute>{lazyPage(<DashboardPage />)}</ProtectedRoute>,
+        element: (
+          <ProtectedRoute>
+            <ProtectedByPermission permission="dashboard:view">
+              {lazyPage(<DashboardPage />)}
+            </ProtectedByPermission>
+          </ProtectedRoute>
+        ),
       },
     ],
   },
