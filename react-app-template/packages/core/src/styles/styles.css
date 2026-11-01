@@ -1,0 +1,25 @@
+/**
+ * CSS pré-compilado da biblioteca (`@hmk/react-admin-kit/styles.css`).
+ *
+ * Fallback para consumidores que NÃO usam Tailwind v4: um único import traz os
+ * tokens, o mapeamento de tema e os utilitários efetivamente usados pelos
+ * componentes da lib. Para melhor tree-shaking, prefira o caminho com preset
+ * Tailwind (ver README).
+ */
+@import './tokens.css';
+@import 'tailwindcss';
+@import './preset.css';
+
+/* Escaneia os componentes da própria biblioteca para emitir apenas as classes
+   utilitárias usadas por eles. */
+@source '../shared';
+@source '../features';
+
+body {
+  margin: 0;
+  background-color: var(--color-surface-default);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
+}

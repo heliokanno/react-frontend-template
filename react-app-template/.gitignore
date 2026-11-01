@@ -23,10 +23,10 @@ coverage
 *.local
 *.tsbuildinfo
 
-# Testes / Playwright
-/playwright-report
-/playwright/.cache
-/test-results
+# Testes / Playwright (sem âncora: valem em qualquer pacote do monorepo)
+playwright-report
+playwright/.cache
+test-results
 
 # Editor
 .vscode/*

@@ -1,0 +1,121 @@
+{
+  "name": "@hmk/react-admin-kit",
+  "version": "0.1.2",
+  "description": "Fundação frontend React reutilizável: componentes, design system, autenticação, autorização de UI e camada HTTP.",
+  "license": "MIT",
+  "author": "Helio Makoto Kanno",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hmkanno/react-frontend-template.git",
+    "directory": "packages/core"
+  },
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "docs",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/entries/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/entries/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./ui": {
+      "types": "./dist/entries/ui.d.ts",
+      "import": "./dist/ui.js"
+    },
+    "./design-system": {
+      "types": "./dist/entries/design-system.d.ts",
+      "import": "./dist/design-system.js"
+    },
+    "./authorization": {
+      "types": "./dist/entries/authorization.d.ts",
+      "import": "./dist/authorization.js"
+    },
+    "./auth": {
+      "types": "./dist/entries/auth.d.ts",
+      "import": "./dist/auth.js"
+    },
+    "./http": {
+      "types": "./dist/entries/http.d.ts",
+      "import": "./dist/http.js"
+    },
+    "./query": {
+      "types": "./dist/entries/query.d.ts",
+      "import": "./dist/query.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./tailwind-preset.css": "./dist/tailwind-preset.css",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "pnpm run clean && vite build && pnpm run build:styles",
+    "build:styles": "node ./scripts/build-styles.mjs",
+    "typecheck": "tsc -b --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "react-hook-form": "^7.0.0",
+    "react-router": "^7.0.0",
+    "zod": "^3.23.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/react-query": {
+      "optional": true
+    },
+    "react-hook-form": {
+      "optional": true
+    },
+    "react-router": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@hookform/resolvers": "5.9.1",
+    "@radix-ui/react-checkbox": "1.3.11",
+    "@radix-ui/react-dialog": "1.1.23",
+    "@radix-ui/react-dropdown-menu": "2.1.24",
+    "@radix-ui/react-label": "2.1.15",
+    "@radix-ui/react-radio-group": "1.4.7",
+    "@radix-ui/react-select": "2.3.7",
+    "@radix-ui/react-slot": "1.3.3",
+    "@radix-ui/react-switch": "1.3.7",
+    "@radix-ui/react-tooltip": "1.2.16",
+    "@tanstack/react-table": "8.21.3",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "1.47.0",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.7",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@tailwindcss/cli": "4.3.3",
+    "@vitejs/plugin-react": "5.2.0",
+    "jsdom": "26.1.0",
+    "msw": "2.15.0",
+    "tailwindcss": "4.3.3",
+    "vite": "7.3.6",
+    "vite-plugin-dts": "4.5.4",
+    "vitest": "3.2.7"
+  }
+}

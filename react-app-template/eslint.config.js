@@ -9,7 +9,13 @@ import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'coverage', 'playwright-report', 'test-results'],
+    ignores: [
+      '**/dist/**',
+      '**/coverage/**',
+      '**/playwright-report/**',
+      '**/test-results/**',
+      '**/node_modules/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -49,10 +55,17 @@ export default tseslint.config(
       ],
     },
   },
-  // Configs e testes não usam type-checking de projeto do app.
+  // Configs e testes não usam type-checking de projeto.
   {
-    files: ['**/*.config.{js,ts}', 'tests/**', 'e2e/**'],
+    files: ['**/*.config.{js,ts,mjs}', '**/scripts/**', '**/tests/**', '**/e2e/**'],
     ...tseslint.configs.disableTypeChecked,
+  },
+  // Scripts de build e configs rodam em Node: habilita os globals do Node.
+  {
+    files: ['**/*.config.{js,ts,mjs}', '**/scripts/**'],
+    languageOptions: {
+      globals: globals.node,
+    },
   },
   prettier,
 );

@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+
+    "types": ["vite/client"],
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "exactOptionalPropertyTypes": true,
+
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@hmk/react-admin-kit": ["../../packages/core/src/entries/index.ts"],
+      "@hmk/react-admin-kit/ui": ["../../packages/core/src/entries/ui.ts"],
+      "@hmk/react-admin-kit/design-system": ["../../packages/core/src/entries/design-system.ts"],
+      "@hmk/react-admin-kit/authorization": ["../../packages/core/src/entries/authorization.ts"],
+      "@hmk/react-admin-kit/auth": ["../../packages/core/src/entries/auth.ts"],
+      "@hmk/react-admin-kit/http": ["../../packages/core/src/entries/http.ts"],
+      "@hmk/react-admin-kit/query": ["../../packages/core/src/entries/query.ts"],
+      "@/shared/*": ["../../packages/core/src/shared/*"],
+      "@/features/*": ["../../packages/core/src/features/*"],
+      "@/infrastructure/*": ["../../packages/core/src/infrastructure/*"],
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src", "tests"]
+}
