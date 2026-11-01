@@ -27,4 +27,5 @@ export {
   type FieldErrors,
 } from '@/infrastructure/errors/AppError';
 export { toAppError, HttpError, TimeoutError } from '@/infrastructure/errors/toAppError';
+export { getErrorMessage } from '@/infrastructure/errors/errorMessages';
 export { isProblemDetail, type ProblemDetail } from '@/infrastructure/errors/ProblemDetail';
