@@ -36,6 +36,8 @@ export type { Toast, ToastOptions, ToastVariant } from './toast/toast-context';
 
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from './tooltip/Tooltip';
 
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs/Tabs';
+
 export {
   Dialog,
   DialogTrigger,
